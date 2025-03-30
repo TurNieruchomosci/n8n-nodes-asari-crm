@@ -51,10 +51,20 @@ Node korzysta z API Key, który należy ustawić w zakładce **Credentials** jak
 ## 📌 Obecne funkcje
 
 - ✅ Pobieranie klientów z ASARI CRM (`GET /clients`)
+- ✅ Dodawanie klientów do ASARI CRM (`POST /clients`)
+
+## 🧪 Przykład użycia - Dodaj klienta
+
+Node obsługuje następujące pola do dodania klienta:
+- `firstName` (imię)
+- `lastName` (nazwisko)
+- `email`
+- `phone`
+
+Możesz przesłać dane przez Input → JSON lub przez `Set Node`.
 
 ## 📌 Plany rozwoju
 
-- Dodawanie klientów
 - Pobieranie ofert
 - Obsługa webhooków
 
