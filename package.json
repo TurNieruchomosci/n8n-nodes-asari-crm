@@ -2,7 +2,8 @@
   "name": "n8n-nodes-asari-crm",
   "version": "1.0.0",
   "description": "ASARI CRM integration for n8n",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -15,8 +16,15 @@
   ],
   "author": "TurNieruchomosci",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "typescript": "^4.0.0"
+  },
+  "n8n": {
+    "credentials": [
+      "./dist/credentials/AsariCrmApi.credentials.js"
+    ],
+    "nodes": [
+      "./dist/nodes/AsariCrm.node.js"
+    ]
   }
 }
