@@ -1,3 +1,4 @@
+// /nodes/AsariCrm.node.ts
 import {
     IExecuteFunctions,
 } from 'n8n-workflow';
@@ -38,21 +39,59 @@ export class AsariCrm implements INodeType {
                         name: 'Pobierz klientów',
                         value: 'getClients',
                     },
+                    {
+                        name: 'Dodaj klienta',
+                        value: 'createClient',
+                    },
                 ],
                 default: 'getClients',
                 description: 'Wybierz akcję do wykonania',
+            },
+            {
+                displayName: 'Dane klienta',
+                name: 'clientData',
+                type: 'collection',
+                displayOptions: {
+                    show: {
+                        action: ['createClient'],
+                    },
+                },
+                placeholder: 'Dodaj pole',
+                default: {},
+                options: [
+                    {
+                        displayName: 'Imię',
+                        name: 'firstName',
+                        type: 'string',
+                        default: '',
+                    },
+                    {
+                        displayName: 'Nazwisko',
+                        name: 'lastName',
+                        type: 'string',
+                        default: '',
+                    },
+                    {
+                        displayName: 'Email',
+                        name: 'email',
+                        type: 'string',
+                        default: '',
+                    },
+                    {
+                        displayName: 'Telefon',
+                        name: 'phone',
+                        type: 'string',
+                        default: '',
+                    },
+                ],
             },
         ],
     };
 
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
         const returnData: INodeExecutionData[] = [];
-
         const credentials = await this.getCredentials('asariCrmApi') as { apiKey: string };
-
         const action = this.getNodeParameter('action', 0) as string;
-
-        let responseData;
         const baseUrl = 'https://api.asari.pl/v2';
 
         if (action === 'getClients') {
@@ -62,12 +101,25 @@ export class AsariCrm implements INodeType {
                     'Content-Type': 'application/json',
                 },
             });
-            responseData = response.data;
+            returnData.push({ json: response.data });
         }
 
-        returnData.push({
-            json: responseData,
-        });
+        if (action === 'createClient') {
+            const clientData = this.getNodeParameter('clientData', 0) as {
+                firstName?: string;
+                lastName?: string;
+                email?: string;
+                phone?: string;
+            };
+
+            const response = await axios.post(`${baseUrl}/clients`, clientData, {
+                headers: {
+                    'Authorization': `Bearer ${credentials.apiKey}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            returnData.push({ json: response.data });
+        }
 
         return [returnData];
     }
