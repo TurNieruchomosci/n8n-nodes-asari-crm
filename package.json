@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-asari-crm",
+  "name": "n8nnodesasaricrm",
   "version": "1.0.0",
   "description": "ASARI CRM integration for n8n",
   "main": "dist/index.js",
